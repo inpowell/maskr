@@ -20,6 +20,18 @@ new_suppressed <- function(data = numeric(), suppression = logical()) {
   )
 }
 
+#' @export
+vec_ptype_full.visnonp_suppressed <- function(x, ...) {
+  data <- field(x, 'data')
+  paste0(vec_ptype_full(data, ...), '+suppression')
+}
+
+#' @export
+vec_ptype_abbr.visnonp_suppressed <- function(x, ...) {
+  data <- field(x, 'data')
+  paste0(vec_ptype_abbr(data, ...), '+sup')
+}
+
 suppressed <- function(data = numeric(), suppression = logical()) {
   rec <- vec_recycle_common(data, suppression)
   new_suppressed(rec[[1]], rec[[2]])
