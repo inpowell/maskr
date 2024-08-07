@@ -1,0 +1,15 @@
+Package: visnonp
+Type: Package
+Title: Visual Class for Vectors with Non-Publishing Requirements
+Version: 0.1.0
+Description: Create vectors with sticky flags for elements that should not be
+    displayed. Numeric vectors have basic subset and arithmetic methods
+    implemented.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Authors@R: 
+    person("Ian", "Powell", , "powell.ian.n@gmail.com", role = c("cre", "aut"))
+Imports: 
+    vctrs (>= 0.6.5)
+RoxygenNote: 7.3.2
