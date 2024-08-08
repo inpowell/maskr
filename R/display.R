@@ -1,9 +1,9 @@
 #' @export
 #' @importFrom cli ansi_string col_red col_grey
-format.visnonp_suppressed <- function(
+format.maskr_suppressed <- function(
     x,
     ...,
-    rep = getOption('visnonp.replacement', 'n.p.')) {
+    rep = getOption('maskr.replacement', 'n.p.')) {
   stopifnot(length(rep) == 1L)
 
   data <- field(x, 'data')
@@ -47,7 +47,7 @@ format.visnonp_suppressed <- function(
 }
 
 #' @export
-obj_print_data.visnonp_suppressed <- function(x, ...) {
+obj_print_data.maskr_suppressed <- function(x, ...) {
   fmt <- format(x, ...)
   cat(fmt)
   invisible(x)

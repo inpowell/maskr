@@ -16,18 +16,18 @@ new_suppressed <- function(data = numeric(), suppression = logical()) {
 
   new_rcrd(
     list(data = data, suppression = suppression),
-    class = 'visnonp_suppressed'
+    class = 'maskr_suppressed'
   )
 }
 
 #' @export
-vec_ptype_full.visnonp_suppressed <- function(x, ...) {
+vec_ptype_full.maskr_suppressed <- function(x, ...) {
   data <- field(x, 'data')
   paste0(vec_ptype_full(data, ...), '+suppression')
 }
 
 #' @export
-vec_ptype_abbr.visnonp_suppressed <- function(x, ...) {
+vec_ptype_abbr.maskr_suppressed <- function(x, ...) {
   data <- field(x, 'data')
   paste0(vec_ptype_abbr(data, ...), '+sup')
 }

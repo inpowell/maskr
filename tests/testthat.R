@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(visnonp)
+library(maskr)
 
-test_check("visnonp")
+test_check("maskr")
