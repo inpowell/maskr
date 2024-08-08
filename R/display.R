@@ -1,13 +1,13 @@
 #' @export
 #' @importFrom cli ansi_string col_red col_grey
-format.maskr_suppressed <- function(
+format.maskr_masked <- function(
     x,
     ...,
     rep = getOption('maskr.replacement', 'n.p.')) {
   stopifnot(length(rep) == 1L)
 
   data <- field(x, 'data')
-  supp <- field(x, 'suppression')
+  mask <- field(x, 'mask')
   na <- is.na(data)
   num <- is.numeric(data)
 
@@ -16,7 +16,7 @@ format.maskr_suppressed <- function(
   if (any(na)) {
     args$width <- max(args$width, 2L) # Width of 'NA'
   }
-  if (any(supp)) {
+  if (any(mask)) {
     args$width <- max(args$width, nchar(rep))
   }
 
@@ -24,10 +24,10 @@ format.maskr_suppressed <- function(
   fmt <- ansi_string(character(length(x)))
 
   # Fill with non-missing, non-suppressed data
-  args$x <- vec_slice(data, !supp & !na)
-  vec_slice(fmt, !supp & !na) <- ansi_string(do.call('format', args))
+  args$x <- vec_slice(data, !mask & !na)
+  vec_slice(fmt, !mask & !na) <- ansi_string(do.call('format', args))
 
-  # For suppressed/missing, need to justify right for numerics
+  # For masked/missing, need to justify right for numerics
   if (num) args$justify <- 'right'
 
   # Ensure that width of not published/NA is correct
@@ -35,19 +35,19 @@ format.maskr_suppressed <- function(
     args$width <- max(nchar(fmt), args$width, na.rm = TRUE)
   }
 
-  # Fill with missing, non-suppressed data
+  # Fill with missing, non-masked data
   args$x <- 'NA'
-  vec_slice(fmt, !supp & na) <- col_red(do.call('format', args))
+  vec_slice(fmt, !mask & na) <- col_red(do.call('format', args))
 
-  # Fill with suppressed data
+  # Fill with masked data
   args$x <- rep
-  vec_slice(fmt, supp) <- col_grey(do.call('format', args))
+  vec_slice(fmt, mask) <- col_grey(do.call('format', args))
 
   fmt
 }
 
 #' @export
-obj_print_data.maskr_suppressed <- function(x, ...) {
+obj_print_data.maskr_masked <- function(x, ...) {
   fmt <- format(x, ...)
   cat(fmt)
   invisible(x)
