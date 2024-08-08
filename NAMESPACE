@@ -2,6 +2,8 @@
 
 S3method(format,maskr_masked)
 S3method(obj_print_data,maskr_masked)
+S3method(vec_cast,maskr_masked.maskr_masked)
+S3method(vec_ptype2,maskr_masked.maskr_masked)
 S3method(vec_ptype_abbr,maskr_masked)
 S3method(vec_ptype_full,maskr_masked)
 export(masked)

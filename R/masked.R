@@ -97,4 +97,18 @@ vec_ptype_abbr.maskr_masked <- function(x, ...) {
   paste0(vec_ptype_abbr(data, ...), '+msk')
 }
 
+# Coercion and casting ----------------------------------------------------
+
+#' @export
+vec_ptype2.maskr_masked.maskr_masked <- function(x, y, ...) {
+  xd <- field(x, 'data')
+  yd <- field(y, 'data')
+  new_masked(vec_ptype2(xd, yd, ...))
+}
+
+#' @export
+vec_cast.maskr_masked.maskr_masked <- function(x, to, ...) {
+  xdata <- field(x, 'data')
+  xcast <- vec_cast(xdata, field(to, 'data'))
+  new_masked(xcast, field(x, 'mask'))
 }
