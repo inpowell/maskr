@@ -14,10 +14,10 @@ format.maskr_masked <- function(
   args <- list(...)
 
   if (any(na)) {
-    args$width <- max(args$width, 2L) # Width of 'NA'
+    args$width <- max(args$width, 2L, 0L) # Width of 'NA'
   }
   if (any(mask)) {
-    args$width <- max(args$width, nchar(rep))
+    args$width <- max(args$width, nchar(rep), 0L)
   }
 
   # Initialise formatted vector
@@ -32,7 +32,7 @@ format.maskr_masked <- function(
 
   # Ensure that width of not published/NA is correct
   if (is.null(args$justify) || args$justify != 'none') {
-    args$width <- max(nchar(fmt), args$width, na.rm = TRUE)
+    args$width <- max(nchar(fmt), args$width, 0L, na.rm = TRUE)
   }
 
   # Fill with missing, non-masked data

@@ -15,3 +15,9 @@ test_that("formatted masks have correct alignment", {
   expchr <- c('abcde', 'n.p. ')
   expect_equal(obschr, expchr)
 })
+
+test_that("formatting zero-length masked vectors works", {
+  msk <- masked()
+  fmt <- format(msk)
+  expect_equal(unclass(fmt), character())
+})
