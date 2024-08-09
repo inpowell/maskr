@@ -15,8 +15,16 @@
 #'   replaced with `n.p.`, or its alternative in
 #'   `getOption('maskr.replacement')`.
 #'
-#'   Masked vectors cannot be converted to their raw types to prevent accidental
-#'   release of data. Instead, use [unmask()] to explicitly unmask a vector.
+#'   Masked vectors cannot be converted to their raw types, to prevent
+#'   accidental release of data. Instead, use [unmask()] to explicitly unmask a
+#'   vector.
+#'
+#' @section Arithmetic:
+#'
+#'   Elementwise arithmetic operators have been implemented in masked vectors.
+#'   The resulting data will be as if performing the operation on the unmasked
+#'   vectors. Mask flags are sticky; the result of any operation involving a
+#'   masked value will also be masked.
 #'
 #' @param data An atomic vector to mask values from. Lists and data frames are
 #'   not supported.
@@ -47,7 +55,10 @@ masked <- function(data = numeric(), mask = logical()) {
   rec <- vec_recycle_common(data, mask)
 
   if (any(is.na(mask))) {
-    cli_abort("{.var mask} must not contain missing values.")
+    cli_abort(
+      "{.var mask} must not contain missing values.",
+      class = 'maskr_error_missing_mask'
+    )
   }
 
   new_masked(rec[[1]], rec[[2]])

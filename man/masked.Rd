@@ -34,8 +34,18 @@ Converting a masked vector to character results in masked vectors being
 replaced with \code{n.p.}, or its alternative in
 \code{getOption('maskr.replacement')}.
 
-Masked vectors cannot be converted to their raw types to prevent accidental
-release of data. Instead, use \code{\link[=unmask]{unmask()}} to explicitly unmask a vector.
+Masked vectors cannot be converted to their raw types, to prevent
+accidental release of data. Instead, use \code{\link[=unmask]{unmask()}} to explicitly unmask a
+vector.
+}
+
+\section{Arithmetic}{
+
+
+Elementwise arithmetic operators have been implemented in masked vectors.
+The resulting data will be as if performing the operation on the unmasked
+vectors. Mask flags are sticky; the result of any operation involving a
+masked value will also be masked.
 }
 
 \examples{
