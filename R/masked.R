@@ -19,12 +19,19 @@
 #'   accidental release of data. Instead, use [unmask()] to explicitly unmask a
 #'   vector.
 #'
-#' @section Arithmetic:
+#' @section Arithmetic and unary mathematical functions:
 #'
 #'   Elementwise arithmetic operators have been implemented in masked vectors.
 #'   The resulting data will be as if performing the operation on the unmasked
 #'   vectors. Mask flags are sticky; the result of any operation involving a
 #'   masked value will also be masked.
+#'
+#'   Most [Math] and [Summary] group generics have been implemented. These first
+#'   force the underlying data to double type (or logical for `any()` and
+#'   `all()`). Results from summary functions will be masked if any input is
+#'   masked, while elementwise operations will preserve the mask from their
+#'   input. Cumulative functions (`cumsum()`, `cummean()` and friends) are not
+#'   implemented.
 #'
 #' @param data An atomic vector to mask values from. Lists and data frames are
 #'   not supported.
@@ -34,10 +41,6 @@
 #' @export
 #'
 #' @examples
-#' # Mask integers in a vector strictly between 0 and 5
-#' x <- 0:8
-#' masked(x, 0L < x & x < 5L)
-#'
 #' # Mask vowels in the alphabet
 #' masked(letters, letters %in% c('a', 'e', 'i', 'o', 'u'))
 #'
@@ -51,6 +54,18 @@
 #' op <- options(maskr.replacement = '*')
 #' sepals
 #' options(op)
+#'
+#' # Mask integers in a vector strictly between 0 and 5
+#' x <- 0:8
+#' xm <- masked(x, 0L < x & x < 5L)
+#'
+#' # The mean will be masked, because at least one if its inputs is masked
+#' mean(xm)
+#' unmask(mean(xm))
+#'
+#' # Other mathematical functions will keep the same mask
+#' log1p(xm)
+#' unmask(log1p(xm))
 masked <- function(data = numeric(), mask = logical()) {
   rec <- vec_recycle_common(data, mask)
 

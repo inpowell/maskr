@@ -59,3 +59,15 @@ test_that("mask flags are sticky on arithmetic", {
   expect_equal(m1 + 1, masked(2:5, c(FALSE, FALSE, TRUE, TRUE)))
   expect_equal(1 + m2, masked(6:9, c(FALSE, TRUE, FALSE, TRUE)))
 })
+
+test_that("summary math functions combine masks", {
+  data <- 0:10
+  mask <- c(TRUE, rep(FALSE, 10L))
+  m <- masked(data, mask)
+  u <- masked(data, FALSE)
+
+  expect_equal(mean(m), masked(5, TRUE))
+  expect_equal(mean(u), masked(5, FALSE))
+  expect_equal(sum(m), masked(55, TRUE))
+  expect_equal(sum(u), masked(55, FALSE))
+})

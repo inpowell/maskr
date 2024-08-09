@@ -36,10 +36,11 @@ vec_math.maskr_masked <- function(.fn, .x, ...) {
     # Summary functions mask their results if any input masked
     prod = ,
     sum = ,
+    mean =
+      new_masked(vec_math(.fn, as.double(unmask(.x)), ...), any(field(.x, 'mask'))),
     any = ,
-    all = ,
-    mean = ,
-      new_masked(vec_math(.fn, unmask(.x), ...), any(field(.x, 'mask'))),
+    all =
+      new_masked(vec_math(.fn, as.logical(unmask(.x)), ...), any(field(.x, 'mask'))),
     # Elementwise generics preserve mask
     abs = ,
     sign = ,
@@ -75,7 +76,7 @@ vec_math.maskr_masked <- function(.fn, .x, ...) {
     is.nan = ,
     is.finite = ,
     is.infinite =
-      new_masked(vec_math(.fn, unmask(.x), ...), field(.x, 'mask')),
+      new_masked(vec_math(.fn, as.double(unmask(.x)), ...), field(.x, 'mask')),
     # Other operations (e.g. cumsum, cummean, etc) not supported
     cli_abort(
       "{.fun {.fn}.maskr_masked} is not supported",
