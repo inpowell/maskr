@@ -4,7 +4,7 @@ format.maskr_masked <- function(
     x,
     ...,
     rep = getOption('maskr.replacement', 'n.p.')) {
-  stopifnot(length(rep) == 1L)
+  check_replacement(rep)
 
   data <- field(x, 'data')
   mask <- field(x, 'mask')
@@ -51,4 +51,44 @@ obj_print_data.maskr_masked <- function(x, ...) {
   fmt <- format(x, ...)
   cat(fmt)
   invisible(x)
+}
+
+#' @export
+as.character.maskr_masked <- function(
+    x,
+    ...,
+    rep = getOption('maskr.replacement', 'n.p.')) {
+  check_replacement(rep)
+
+  ret <- character(length(x))
+  data <- field(x, 'data')
+  mask <- field(x, 'mask')
+
+  ret
+  ret[mask] <- rep
+  ret[!mask] <- as.character(data[!mask])
+
+  ret
+}
+
+#' @importFrom rlang is_character
+check_replacement <- function(rep) {
+  if (length(rep) != 1L) {
+    cli_abort(
+      "Replacement {.var rep} must have length 1.",
+      class = c('maskr_error_rep_length', 'maskr_error_replacement', 'maskr_error')
+    )
+  }
+
+  if (!is_character(rep)) {
+    cli_abort(
+      message = c(
+        "Replacement {.var rep} must be a character value.",
+        i = "Instead, replacement is {.val {rep}} of type {.cls {class(rep)}}."
+      ),
+      class = c('maskr_error_rep_type', 'maskr_error_replacement', 'maskr_error')
+    )
+  }
+
+  invisible(rep)
 }
