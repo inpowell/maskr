@@ -3,17 +3,30 @@
 \name{masked}
 \alias{masked}
 \alias{unmask}
+\alias{unmask<-}
+\alias{mask}
+\alias{mask<-}
 \title{Create a masked atomic vector}
 \usage{
 masked(data = numeric(), mask = logical())
 
 unmask(masked)
+
+unmask(masked) <- value
+
+mask(masked)
+
+mask(masked) <- value
 }
 \arguments{
 \item{data}{An atomic vector to mask values from. Lists and data frames are
 not supported.}
 
 \item{mask}{A logical vector that indicates which values of \code{data} to mask.}
+
+\item{masked}{A masked vector to extract fields from.}
+
+\item{value}{A replacement vector for unmasked data, or the mask flags.}
 }
 \value{
 A masked vector.

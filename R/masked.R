@@ -36,6 +36,8 @@
 #' @param data An atomic vector to mask values from. Lists and data frames are
 #'   not supported.
 #' @param mask A logical vector that indicates which values of `data` to mask.
+#' @param masked A masked vector to extract fields from.
+#' @param value A replacement vector for unmasked data, or the mask flags.
 #'
 #' @return A masked vector.
 #' @export
@@ -72,7 +74,7 @@ masked <- function(data = numeric(), mask = logical()) {
   if (any(is.na(mask))) {
     cli_abort(
       "{.var mask} must not contain missing values.",
-      class = 'maskr_error_missing_mask'
+      class = c('maskr_error_missing_mask', 'maskr_error')
     )
   }
 
@@ -83,11 +85,45 @@ masked <- function(data = numeric(), mask = logical()) {
 #' @rdname masked
 unmask <- function(masked) {
   if (!inherits(masked, 'maskr_masked')) {
-    cli_abort('{.fun unmask} needs a {.cls masked} vector from the {.pkg maskr} package.')
+    cli_abort(
+      '{.fun unmask} needs a {.cls masked} vector from the {.pkg maskr} package.',
+      class = c('maskr_error')
+    )
   }
-
   field(masked, 'data')
 }
+#' @export
+#' @rdname masked
+`unmask<-` <- function(masked, value) {
+  value <- vec_recycle(value, vec_size(masked))
+  `field<-`(masked, 'data', value)
+}
+
+#' @export
+#' @rdname masked
+mask <- function(masked) {
+  if (!inherits(masked, 'maskr_masked')) {
+    cli_abort(
+      '{.fun mask} needs a {.cls masked} vector from the {.pkg maskr} package.',
+      class = c('maskr_error')
+    )
+  }
+  field(masked, 'mask')
+}
+#' @export
+#' @rdname masked
+`mask<-` <- function(masked, value) {
+  if (any(is.na(value))) {
+    cli_abort(
+      "Missing values nust not be set in {.fun mask}.",
+      class = c('maskr_error_missing_mask', 'maskr_error')
+    )
+  }
+
+  value <- vec_recycle(value, vec_size(masked))
+  `field<-`(masked, 'mask', value)
+}
+
 
 #' @importFrom rlang is_atomic
 new_masked <- function(data = numeric(), mask = logical()) {

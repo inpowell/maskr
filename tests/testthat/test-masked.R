@@ -1,3 +1,33 @@
+test_that("missing values aren't allowed in mask by default", {
+  expect_error(masked(c(1, 2), c(NA, TRUE)), class = 'maskr_error_missing_mask')
+})
+
+test_that("masked getters and setters work", {
+  data_pre <- 1:10
+  mask_pre <- rep(c(FALSE, TRUE), times = 5L)
+
+  msk <- masked(data_pre, mask_pre)
+  expect_equal(unmask(msk), data_pre)
+  expect_equal(mask(msk), mask_pre)
+
+  data_post <- c(1:5, rep(NA, 5L))
+  mask_post <- c(rep(c(FALSE, TRUE), times = 3L), rep(FALSE, 4L))
+  unmask(msk)[6:10] <- NA
+  mask(msk)[7:10] <- FALSE
+
+  expect_equal(unmask(msk), data_post)
+  expect_equal(mask(msk), mask_post)
+})
+
+test_that("mask setter can't create missing values", {
+  data_pre <- 1:10
+  mask_pre <- rep(c(FALSE, TRUE), times = 5L)
+
+  msk <- masked(data_pre, mask_pre)
+
+  expect_error(mask(msk)[1] <- NA, class = 'maskr_error_missing_mask')
+})
+
 test_that("coercion with masked vectors follows coercion hierarchy", {
   msk_lgl <- masked(logical())
   msk_int <- masked(integer())
