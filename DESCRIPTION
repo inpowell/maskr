@@ -16,7 +16,9 @@ Imports:
     vctrs (>= 0.6.5)
 RoxygenNote: 7.3.2
 Suggests: 
+    dplyr,
     fansi,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    tidyr
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)

@@ -1,0 +1,98 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# maskr
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+maskr introduces the `masked` class that suppresses or "masks" printing of certain elements of an atomic vector while keeping the underlying data available for computation. Masked vectors can include numeric, logical character or factor data.
+
+## Installation
+
+You can install the development version of maskr from GitHub:
+
+``` r
+devtools::install_github('inpowell/maskr')
+```
+
+## Example
+
+```{r example}
+library(maskr)
+```
+
+Masked vectors can be built from atomic vectors using `masked()`:
+
+```{r}
+x <- 0:8
+masked(x, 0 < x & x < 5)
+```
+
+Here, the masked cells are indicated by "n.p." (not published) by default. We can change how they are presented using the `maskr.replacement` option:
+
+```{r}
+options(maskr.replacement = '*')
+masked(x, 0 < x & x < 5)
+options(maskr.replacement = NULL)
+```
+
+Other types of atomic vectors can be masked as well:
+
+```{r}
+masked(letters, letters %in% c('a', 'e', 'i', 'o', 'u'))
+```
+
+We can also use this to control which data gets displayed in data frames and cross-tables.
+
+```{r}
+tabular <- tibble::tibble(
+  Activity = gl(4, 4, 16, labels = c("I", "II", "III", "Total")),
+  Region = gl(4, 1, 16, labels = c("A", "B", "C", "Total")),
+  Count = as.integer(c(
+    10,  25,   5,  40,
+    16,  13,  11,  40,
+    17,  20,  24,  61,
+    43,  58,  40, 141
+  ))
+)
+suppress <- rep(FALSE, 16L)
+suppress[c(5, 8, 9, 12)] <- TRUE
+tabular$Count <- masked(tabular$Count, suppress)
+tabular
+```
+
+This works with tidyverse reshaping functions like `pivot_wider()`:
+
+```{r}
+tidyr::pivot_wider(tabular, names_from = 'Region', values_from = 'Count')
+```
+
+Masked vectors support basic arithmetic, so for example we can find percentages while maintaining the correct masking pattern.
+
+```{r}
+tabular |>
+  dplyr::group_by(Activity) |>
+  dplyr::mutate(Percent = 100 * Count / Count[Region == 'Total'])
+```
+
+Notice that where we have divided by a masked cell, the percentage is also masked.
+
+Using masked vectors, as opposed to just replacing values we want to suppress with missing values, means we can always recover our data before we publish it:
+
+```{r}
+tabular$Count <- unmask(tabular$Count)
+tabular
+```
