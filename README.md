@@ -53,7 +53,8 @@ Other types of atomic vectors can be masked as well:
 ``` r
 masked(letters, letters %in% c('a', 'e', 'i', 'o', 'u'))
 #> <character+masked[26]>
-#> n.p. b    c    d    n.p. f    g    h    n.p. j    k    l    m    n    n.p. p    q    r    s    t    n.p. v    w    x    y    z
+#> n.p. b    c    d    n.p. f    g    h    n.p. j    k    l    m    n    n.p. p    
+#> q    r    s    t    n.p. v    w    x    y    z
 ```
 
 We can also use this to control which data gets displayed in data frames
