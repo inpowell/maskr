@@ -1,5 +1,4 @@
 #' @export
-#' @importFrom cli ansi_string col_red col_grey
 format.maskr_masked <- function(
     x,
     ...,
@@ -21,11 +20,11 @@ format.maskr_masked <- function(
   }
 
   # Initialise formatted vector
-  fmt <- ansi_string(character(length(x)))
+  fmt <- character(length(x))
 
   # Fill with non-missing, non-suppressed data
   args$x <- vec_slice(data, !mask & !na)
-  vec_slice(fmt, !mask & !na) <- ansi_string(do.call('format', args))
+  vec_slice(fmt, !mask & !na) <- do.call('format', args)
 
   # For masked/missing, need to justify right for numerics
   if (num) args$justify <- 'right'
@@ -37,19 +36,26 @@ format.maskr_masked <- function(
 
   # Fill with missing, non-masked data
   args$x <- 'NA'
-  vec_slice(fmt, !mask & na) <- col_red(do.call('format', args))
+  vec_slice(fmt, !mask & na) <- do.call('format', args)
 
   # Fill with masked data
   args$x <- rep
-  vec_slice(fmt, mask) <- col_grey(do.call('format', args))
+  vec_slice(fmt, mask) <- do.call('format', args)
 
   fmt
 }
 
 #' @export
+#' @importFrom cli ansi_string col_red col_grey
 obj_print_data.maskr_masked <- function(x, ...) {
-  fmt <- format(x, ...)
-  cat(fmt)
+  fmt <- ansi_string(format(x, ...))
+  na <- is.na(unmask(x))
+  masked <- mask(x)
+
+  fmt[na] <- col_red(fmt[na])
+  fmt[masked] <- col_grey(fmt[masked])
+
+  cat(fmt, fill = TRUE)
   invisible(x)
 }
 
