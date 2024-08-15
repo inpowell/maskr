@@ -8,8 +8,16 @@
 \description{
 Create vectors with sticky flags for elements that should not be displayed. Numeric vectors have basic subset and arithmetic methods implemented.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/inpowell/maskr}
+  \item Report bugs at \url{https://github.com/inpowell/maskr/issues}
+}
+
+}
 \author{
-\strong{Maintainer}: Ian Powell \email{powell.ian.n@gmail.com}
+\strong{Maintainer}: Ian Powell \email{powell.ian.n@gmail.com} [copyright holder]
 
 }
 \keyword{internal}
