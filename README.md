@@ -4,6 +4,8 @@
 # maskr
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/inpowell/maskr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/inpowell/maskr/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 maskr introduces the `masked` class that suppresses or “masks” printing
