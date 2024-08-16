@@ -34,7 +34,9 @@ test_that("replacements must be length-1 character vectors", {
   msk <- masked(c('abcde', 'defgh'), c(FALSE, TRUE))
   expect_error(format(msk, rep = c('a', 'b')), class = 'maskr_error_rep_length')
   expect_error(as.character(msk, rep = c('a', 'b')), class = 'maskr_error_rep_length')
+  expect_error(pillar::pillar_shaft(msk, rep = c('a', 'b')), class = 'maskr_error_rep_length')
 
   expect_error(format(msk, rep = 1L), class = 'maskr_error_rep_type')
   expect_error(as.character(msk, rep = FALSE), class = 'maskr_error_rep_type')
+  expect_error(pillar::pillar_shaft(msk, rep = charToRaw('*')), class = 'maskr_error_rep_type')
 })

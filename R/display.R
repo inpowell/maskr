@@ -101,6 +101,7 @@ check_replacement <- function(rep) {
 
 #' @exportS3Method pillar::pillar_shaft
 pillar_shaft.maskr_masked <- function(x, ..., rep = getOption('maskr.replacement', 'n.p.')) {
+  check_replacement(rep)
   shft <- pillar::pillar_shaft(unmask(x), ...)
   class(shft) <- c("pillar_shaft_maskr_masked", class(shft))
   attr(shft, 'replacement') <- rep
