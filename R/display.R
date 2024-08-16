@@ -98,3 +98,25 @@ check_replacement <- function(rep) {
 
   invisible(rep)
 }
+
+#' @exportS3Method pillar::pillar_shaft
+pillar_shaft.maskr_masked <- function(x, ..., rep = getOption('maskr.replacement', 'n.p.')) {
+  shft <- pillar::pillar_shaft(unmask(x), ...)
+  class(shft) <- c("pillar_shaft_maskr_masked", class(shft))
+  attr(shft, 'replacement') <- rep
+  attr(shft, 'mask') <- mask(x)
+
+  if (any(mask(x))) {
+    attr(shft, 'min_width') <- max(attr(shft, 'min_width'), nchar(rep))
+    attr(shft, 'width') <- max(attr(shft, 'width'), nchar(rep))
+  }
+
+  shft
+}
+
+#' @export
+format.pillar_shaft_maskr_masked <- function(x, width, ...) {
+  orn <- NextMethod('format')
+  orn[attr(x, 'mask')] <- pillar::style_subtle(attr(x, 'replacement'))
+  orn
+}

@@ -12,6 +12,7 @@ Authors@R:
     person("Ian", "Powell", , "powell.ian.n@gmail.com", role = c("cre", "aut", "cph"))
 Imports: 
     cli,
+    pillar,
     rlang,
     vctrs (>= 0.6.5)
 RoxygenNote: 7.3.2
