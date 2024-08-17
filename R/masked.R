@@ -61,6 +61,13 @@
 #' x <- 0:8
 #' xm <- masked(x, 0L < x & x < 5L)
 #'
+#' # Arithmetic with unmasked values does not change mask:
+#' xm / xm[8] * 100
+#' 2 ^ xm
+#' # But arithmetic with a masked value will mask outputs:
+#' xm + xm[3]
+#' xm - rev(xm)
+#'
 #' # The mean will be masked, because at least one if its inputs is masked
 #' mean(xm)
 #' unmask(mean(xm))
