@@ -120,10 +120,10 @@ tabular |>
 #> # Groups:   Activity [4]
 #>    Activity Region     Count   Percent
 #>    <fct>    <fct>  <int+msk> <dbl+msk>
-#>  1 I        A             10  25.00000
-#>  2 I        B             25  62.50000
-#>  3 I        C              5  12.50000
-#>  4 I        Total         40 100.00000
+#>  1 I        A             10      25  
+#>  2 I        B             25      62.5
+#>  3 I        C              5      12.5
+#>  4 I        Total         40     100  
 #>  5 II       A           n.p.      n.p.
 #>  6 II       B             13      n.p.
 #>  7 II       C             11      n.p.
@@ -132,10 +132,10 @@ tabular |>
 #> 10 III      B             20      n.p.
 #> 11 III      C             24      n.p.
 #> 12 III      Total       n.p.      n.p.
-#> 13 Total    A             43  30.49645
-#> 14 Total    B             58  41.13475
-#> 15 Total    C             40  28.36879
-#> 16 Total    Total        141 100.00000
+#> 13 Total    A             43      30.5
+#> 14 Total    B             58      41.1
+#> 15 Total    C             40      28.4
+#> 16 Total    Total        141     100
 ```
 
 Notice that where we have divided by a masked cell, the percentage is
