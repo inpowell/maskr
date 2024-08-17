@@ -1,5 +1,4 @@
 #' @export
-#' @importFrom cli ansi_string col_red col_grey
 format.maskr_masked <- function(
     x,
     ...,
@@ -21,11 +20,11 @@ format.maskr_masked <- function(
   }
 
   # Initialise formatted vector
-  fmt <- ansi_string(character(length(x)))
+  fmt <- character(length(x))
 
   # Fill with non-missing, non-suppressed data
   args$x <- vec_slice(data, !mask & !na)
-  vec_slice(fmt, !mask & !na) <- ansi_string(do.call('format', args))
+  vec_slice(fmt, !mask & !na) <- do.call('format', args)
 
   # For masked/missing, need to justify right for numerics
   if (num) args$justify <- 'right'
@@ -37,19 +36,26 @@ format.maskr_masked <- function(
 
   # Fill with missing, non-masked data
   args$x <- 'NA'
-  vec_slice(fmt, !mask & na) <- col_red(do.call('format', args))
+  vec_slice(fmt, !mask & na) <- do.call('format', args)
 
   # Fill with masked data
   args$x <- rep
-  vec_slice(fmt, mask) <- col_grey(do.call('format', args))
+  vec_slice(fmt, mask) <- do.call('format', args)
 
   fmt
 }
 
 #' @export
+#' @importFrom cli ansi_string col_red col_grey
 obj_print_data.maskr_masked <- function(x, ...) {
-  fmt <- format(x, ...)
-  cat(fmt)
+  fmt <- ansi_string(format(x, ...))
+  na <- is.na(unmask(x))
+  masked <- mask(x)
+
+  fmt[na] <- col_red(fmt[na])
+  fmt[masked] <- col_grey(fmt[masked])
+
+  cat(fmt, fill = TRUE)
   invisible(x)
 }
 
@@ -91,4 +97,27 @@ check_replacement <- function(rep) {
   }
 
   invisible(rep)
+}
+
+#' @exportS3Method pillar::pillar_shaft
+pillar_shaft.maskr_masked <- function(x, ..., rep = getOption('maskr.replacement', 'n.p.')) {
+  check_replacement(rep)
+  shft <- pillar::pillar_shaft(unmask(x), ...)
+  class(shft) <- c("pillar_shaft_maskr_masked", class(shft))
+  attr(shft, 'replacement') <- rep
+  attr(shft, 'mask') <- mask(x)
+
+  if (any(mask(x))) {
+    attr(shft, 'min_width') <- max(attr(shft, 'min_width'), nchar(rep))
+    attr(shft, 'width') <- max(attr(shft, 'width'), nchar(rep))
+  }
+
+  shft
+}
+
+#' @export
+format.pillar_shaft_maskr_masked <- function(x, width, ...) {
+  orn <- NextMethod('format')
+  orn[attr(x, 'mask')] <- pillar::style_subtle(attr(x, 'replacement'))
+  orn
 }

@@ -53,7 +53,8 @@ Other types of atomic vectors can be masked as well:
 ``` r
 masked(letters, letters %in% c('a', 'e', 'i', 'o', 'u'))
 #> <character+masked[26]>
-#> n.p. b    c    d    n.p. f    g    h    n.p. j    k    l    m    n    n.p. p    q    r    s    t    n.p. v    w    x    y    z
+#> n.p. b    c    d    n.p. f    g    h    n.p. j    k    l    m    n    n.p. p    
+#> q    r    s    t    n.p. v    w    x    y    z
 ```
 
 We can also use this to control which data gets displayed in data frames
@@ -119,10 +120,10 @@ tabular |>
 #> # Groups:   Activity [4]
 #>    Activity Region     Count   Percent
 #>    <fct>    <fct>  <int+msk> <dbl+msk>
-#>  1 I        A             10  25.00000
-#>  2 I        B             25  62.50000
-#>  3 I        C              5  12.50000
-#>  4 I        Total         40 100.00000
+#>  1 I        A             10      25  
+#>  2 I        B             25      62.5
+#>  3 I        C              5      12.5
+#>  4 I        Total         40     100  
 #>  5 II       A           n.p.      n.p.
 #>  6 II       B             13      n.p.
 #>  7 II       C             11      n.p.
@@ -131,10 +132,10 @@ tabular |>
 #> 10 III      B             20      n.p.
 #> 11 III      C             24      n.p.
 #> 12 III      Total       n.p.      n.p.
-#> 13 Total    A             43  30.49645
-#> 14 Total    B             58  41.13475
-#> 15 Total    C             40  28.36879
-#> 16 Total    Total        141 100.00000
+#> 13 Total    A             43      30.5
+#> 14 Total    B             58      41.1
+#> 15 Total    C             40      28.4
+#> 16 Total    Total        141     100
 ```
 
 Notice that where we have divided by a masked cell, the percentage is
