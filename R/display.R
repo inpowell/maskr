@@ -1,4 +1,40 @@
+#' Display and write masked vectors
+#'
+#' Masked vectors generally cannot be converted to other types without
+#' [unmask]ing them. However, they can be written as character vectors (losing
+#' the underlying masked data) for printing to the console, and saving to files.
+#'
+#' @param x A masked vector.
+#' @param ... For `format()`, passed to other format methods. For
+#'   `as.character()`, ignored.
+#' @param rep A single character value that defines a string to show instead of
+#'   the underlying value for data that is masked.
+#'
+#' @return A character vector with masked values replaced by `rep`.
 #' @export
+#'
+#' @examples
+#' abc <- masked(letters, letters %in% c('a', 'e', 'i', 'o', 'u'))
+#' # Prints with default n.p. label - uses format() under the hood
+#' print(abc)
+#'
+#' # Format as string with * instead of n.p.
+#' format(abc, rep = '*')
+#' print(abc, rep = '*') # Also works with print()
+#'
+#' as.character(abc) # Similar to format(), but without alignment
+#'
+#' # Dispatches format to underlying data
+#' nums <- masked(
+#'   c(1:12, NA, NA, 15:26),
+#'   rep_len(c(FALSE, FALSE, FALSE, TRUE, FALSE), 26L)
+#' )
+#' print(nums)
+#' print(nums, rep = '*') # Automatically right-aligned for numeric types
+#'
+#' # as.character() useful for saving tables without revealing data
+#' alphanum <- data.frame(alpha = abc, num = nums)
+#' write.csv(head(alphanum))
 format.maskr_masked <- function(
     x,
     ...,
@@ -46,20 +82,7 @@ format.maskr_masked <- function(
 }
 
 #' @export
-#' @importFrom cli ansi_string col_red col_grey
-obj_print_data.maskr_masked <- function(x, ...) {
-  fmt <- ansi_string(format(x, ...))
-  na <- is.na(unmask(x))
-  masked <- mask(x)
-
-  fmt[na] <- col_red(fmt[na])
-  fmt[masked] <- col_grey(fmt[masked])
-
-  cat(fmt, fill = TRUE)
-  invisible(x)
-}
-
-#' @export
+#' @rdname format.maskr_masked
 as.character.maskr_masked <- function(
     x,
     ...,
@@ -75,6 +98,20 @@ as.character.maskr_masked <- function(
   ret[!mask] <- as.character(data[!mask])
 
   ret
+}
+
+#' @export
+#' @importFrom cli ansi_string col_red col_grey
+obj_print_data.maskr_masked <- function(x, ...) {
+  fmt <- ansi_string(format(x, ...))
+  na <- is.na(unmask(x))
+  masked <- mask(x)
+
+  fmt[na & !masked] <- col_red(fmt[na & !masked])
+  fmt[masked] <- col_grey(fmt[masked])
+
+  cat(fmt, fill = TRUE)
+  invisible(x)
 }
 
 #' @importFrom rlang is_character
