@@ -107,7 +107,7 @@ obj_print_data.maskr_masked <- function(x, ...) {
   na <- is.na(unmask(x))
   masked <- mask(x)
 
-  fmt[na] <- col_red(fmt[na])
+  fmt[na & !masked] <- col_red(fmt[na & !masked])
   fmt[masked] <- col_grey(fmt[masked])
 
   cat(fmt, fill = TRUE)
