@@ -40,3 +40,40 @@ test_that("replacements must be length-1 character vectors", {
   expect_error(as.character(msk, rep = FALSE), class = 'maskr_error_rep_type')
   expect_error(pillar::pillar_shaft(msk, rep = charToRaw('*')), class = 'maskr_error_rep_type')
 })
+
+test_that("masked vectors have pretty printing in tibbles", {
+  withr::local_package('tibble')
+  withr::local_package('dplyr')
+  withr::local_package('pillar')
+
+  test_table <- tibble(
+    Logical = rep_len(c(FALSE, TRUE), 5L),
+    ShortInt = 8:12,
+    Integer = 8:12 * 1234L,
+    Double = 8:12 * 10 + 12:8 / 100,
+    BigDouble = 64L^(5L*(-2:2)),
+    Factor = gl(2, 1, 5, labels = c('A', 'B')),
+    Ordered = gl(5, 1, 5, labels = c('X', 'Y', 'Z', 'U', 'V'), ordered = TRUE),
+    Character = c('ABCDE', 'BCDEF', 'CDEFGHI', 'DEFGH', 'EFGHIJKL'),
+    LongCharacter = paste(LETTERS, collapse = ' ')
+  )
+
+  test_table <- vctrs::vec_rbind(test_table, NA)
+
+  for (idx in seq_along(test_table)) {
+    mask <- rep(FALSE, 6L)
+    mask[[6L - idx %% 6L]] <- TRUE
+    test_table[[idx]] <- masked(test_table[[idx]], mask)
+  }
+
+  expect_snapshot(print(test_table, width = 100L))
+  expect_snapshot(print(test_table, width =  90L))
+  expect_snapshot(print(test_table, width =  80L))
+  expect_snapshot(print(test_table, width =  60L))
+  expect_snapshot(print(test_table, width =  40L))
+
+  withr::with_options(
+    list(maskr.replacement = '*'),
+    expect_snapshot(print(test_table, width = 100L))
+  )
+})
