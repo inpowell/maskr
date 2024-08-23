@@ -1,7 +1,7 @@
 Package: maskr
 Type: Package
 Title: Visual Class for Vectors with Non-Publishing Requirements
-Version: 0.1.0
+Version: 0.1.0.9000
 Description: Create vectors with sticky flags for elements that should not be
     displayed. Numeric vectors have basic subset and arithmetic methods
     implemented.
