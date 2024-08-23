@@ -15,7 +15,13 @@ logical character or factor data.
 
 ## Installation
 
-You can install the development version of maskr from GitHub:
+maskr can be installed from CRAN using:
+
+``` r
+install.packages('maskr')
+```
+
+You can also install the development version of maskr from GitHub:
 
 ``` r
 devtools::install_github('inpowell/maskr')

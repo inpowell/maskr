@@ -12,7 +12,6 @@ vec_arith.maskr_masked.maskr_masked <- function(op, x, y, ...) {
   new_masked(d, m)
 }
 
-#' @export
 #' @rawNamespace S3method(vec_arith.maskr_masked,logical,.vec_arith.maskr_masked.atomic)
 #' @rawNamespace S3method(vec_arith.maskr_masked,numeric,.vec_arith.maskr_masked.atomic)
 #' @rawNamespace S3method(vec_arith.maskr_masked,Date,.vec_arith.maskr_masked.atomic)
@@ -21,7 +20,6 @@ vec_arith.maskr_masked.maskr_masked <- function(op, x, y, ...) {
   new_masked(d, field(x, 'mask'))
 }
 
-#' @export
 #' @rawNamespace S3method(vec_arith.logical,maskr_masked,.vec_arith.atomic.maskr_masked)
 #' @rawNamespace S3method(vec_arith.numeric,maskr_masked,.vec_arith.atomic.maskr_masked)
 #' @rawNamespace S3method(vec_arith.Date,maskr_masked,.vec_arith.atomic.maskr_masked)

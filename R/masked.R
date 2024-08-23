@@ -182,7 +182,6 @@ vec_cast.maskr_masked.maskr_masked <- function(x, to, ...) {
   new_masked(xcast, field(x, 'mask'))
 }
 
-#' @export
 #' @rawNamespace S3method(vec_ptype2,maskr_masked.logical,.vec_ptype2.maskr_masked.atomic)
 #' @rawNamespace S3method(vec_ptype2,maskr_masked.integer,.vec_ptype2.maskr_masked.atomic)
 #' @rawNamespace S3method(vec_ptype2,maskr_masked.double,.vec_ptype2.maskr_masked.atomic)
@@ -195,7 +194,6 @@ vec_cast.maskr_masked.maskr_masked <- function(x, to, ...) {
   new_masked(vec_ptype2(xd, y))
 }
 
-#' @export
 #' @rawNamespace S3method(vec_ptype2,logical.maskr_masked,.vec_ptype2.atomic.maskr_masked)
 #' @rawNamespace S3method(vec_ptype2,integer.maskr_masked,.vec_ptype2.atomic.maskr_masked)
 #' @rawNamespace S3method(vec_ptype2,double.maskr_masked,.vec_ptype2.atomic.maskr_masked)
@@ -208,7 +206,6 @@ vec_cast.maskr_masked.maskr_masked <- function(x, to, ...) {
   new_masked(vec_ptype2(x, yd))
 }
 
-#' @export
 #' @rawNamespace S3method(vec_cast,maskr_masked.logical,.vec_cast.maskr_masked.atomic)
 #' @rawNamespace S3method(vec_cast,maskr_masked.integer,.vec_cast.maskr_masked.atomic)
 #' @rawNamespace S3method(vec_cast,maskr_masked.double,.vec_cast.maskr_masked.atomic)
